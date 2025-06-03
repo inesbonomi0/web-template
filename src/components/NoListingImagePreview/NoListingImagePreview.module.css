@@ -1,11 +1,4 @@
-.container {
-  max-width: 366px;
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
 .preview {
-  /* Maintain aspect ratio */
   position: absolute;
   top: 0;
   bottom: 0;
@@ -26,7 +19,7 @@
 }
 
 /* Hard coded styles */
-
+/*  Modify or extend the available fallback styles here. */
 .white {
   color: var(--colorGrey800);
   background-color: var(--colorWhite);

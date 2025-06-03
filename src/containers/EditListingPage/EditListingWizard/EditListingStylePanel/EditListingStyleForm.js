@@ -90,8 +90,11 @@ export const EditListingStyleForm = props => {
               <FormattedMessage id="EditListingStyleForm.preview" />
             </H5>
             <NoListingImagePreview
+              width={366}
+              height={275}
               style={values.cardStyle}
               listingTitle={listingTitle}
+              className={css.aspectRatioWrapper}
             ></NoListingImagePreview>
             <Button
               className={css.submitButton}

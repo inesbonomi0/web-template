@@ -68,3 +68,9 @@
 .previewText {
   color: var(--colorGrey300);
 }
+
+.aspectRatioWrapper {
+  max-width: 366px;
+  display: grid;
+  grid-template-columns: 1fr;
+}
