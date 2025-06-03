@@ -99,6 +99,10 @@
   gap: 24px;
 }
 
+.actionBarContainerForNoListingImage {
+  padding: 13px;
+}
+
 .actionBarForHeroLayout {
   /* Action bar prevents the image click events going to the parent and
    should not show a pointer */
@@ -354,12 +358,16 @@
 .productOrderPanel {
   @media (--viewportLarge) {
     display: block;
-    margin-top: 24px;
   }
   /* Note: panel height might be too much on small viewport - hence min-height */
   @media (--viewportLarge) and (min-height: 950px) {
     position: sticky;
     top: 108px;
+  }
+  &.imagesEnabled {
+    @media (--viewportLarge) {
+      margin-top: 24px;
+    }
   }
 }
 
@@ -737,6 +745,31 @@
 
   @media (--viewportLarge) {
     display: none;
+  }
+}
+
+.noListingImageHeading {
+  margin: 0 24px 24px 24px;
+  padding-top: 36px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 24px 0;
+  }
+}
+
+.noListingImageHeadingHero {
+  composes: noListingImageHeading;
+
+  @media (--viewportMedium) {
+    padding-top: 0;
+  }
+}
+
+.noListingImageHeadingProduct {
+  composes: noListingImageHeading;
+
+  @media (--viewportLarge) {
+    padding-top: 0;
   }
 }
 

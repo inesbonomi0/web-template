@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -25,6 +25,7 @@ import {
   isForbiddenError,
 } from '../../util/errors.js';
 import { hasPermissionToViewData, isUserAuthorized } from '../../util/userHelpers.js';
+import { requireListingImage } from '../../util/configHelpers';
 import {
   ensureListing,
   ensureOwnListing,
@@ -81,6 +82,7 @@ import SectionReviews from './SectionReviews';
 import SectionAuthorMaybe from './SectionAuthorMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import CustomListingFields from './CustomListingFields';
+import ActionBarMaybe from './ActionBarMaybe';
 
 import css from './ListingPage.module.css';
 
@@ -93,6 +95,12 @@ export const ListingPageComponent = props => {
     props.inquiryModalOpenForListingId === props.params.id
   );
   const [imageCarouselOpen, setImageCarouselOpen] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const {
     isAuthenticated,
@@ -205,6 +213,10 @@ export const ListingPageComponent = props => {
   const isPurchase = isPurchaseProcess(processName);
   const processType = isBooking ? 'booking' : isPurchase ? 'purchase' : 'inquiry';
 
+  const validListingTypes = listingConfig.listingTypes;
+  const foundListingTypeConfig = validListingTypes.find(conf => conf.listingType === listingType);
+  const showListingImage = requireListingImage(foundListingTypeConfig);
+
   const currentAuthor = authorAvailable ? currentListing.author : null;
   const ensuredAuthor = ensureUser(currentAuthor);
   const noPayoutDetailsSetWithOwnListing =
@@ -289,6 +301,33 @@ export const ListingPageComponent = props => {
     setImageCarouselOpen(true);
   };
 
+  const actionBar =
+    mounted && currentListing.id && isOwnListing ? (
+      <>
+        {noPayoutDetailsSetWithOwnListing ? (
+          <ActionBarMaybe
+            className={css.actionBarForHeroLayout}
+            isOwnListing={isOwnListing}
+            listing={currentListing}
+            showNoPayoutDetailsSet={noPayoutDetailsSetWithOwnListing}
+            currentUser={currentUser}
+          />
+        ) : null}
+        <ActionBarMaybe
+          className={css.actionBarForHeroLayout}
+          isOwnListing={isOwnListing}
+          listing={currentListing}
+          currentUser={currentUser}
+          editParams={{
+            id: listingId.uuid,
+            slug: listingSlug,
+            type: listingPathParamType,
+            tab: listingTab,
+          }}
+        />
+      </>
+    ) : null;
+
   return (
     <Page
       title={schemaTitle}
@@ -312,26 +351,23 @@ export const ListingPageComponent = props => {
       }}
     >
       <LayoutSingleColumn className={css.pageRoot} topbar={topbar} footer={<FooterContainer />}>
-        <SectionHero
-          title={title}
-          listing={currentListing}
-          isOwnListing={isOwnListing}
-          currentUser={currentUser}
-          editParams={{
-            id: listingId.uuid,
-            slug: listingSlug,
-            type: listingPathParamType,
-            tab: listingTab,
-          }}
-          imageCarouselOpen={imageCarouselOpen}
-          onImageCarouselClose={() => setImageCarouselOpen(false)}
-          handleViewPhotosClick={handleViewPhotosClick}
-          onManageDisableScrolling={onManageDisableScrolling}
-          noPayoutDetailsSetWithOwnListing={noPayoutDetailsSetWithOwnListing}
-        />
+        {showListingImage ? (
+          <SectionHero
+            title={title}
+            listing={currentListing}
+            isOwnListing={isOwnListing}
+            imageCarouselOpen={imageCarouselOpen}
+            onImageCarouselClose={() => setImageCarouselOpen(false)}
+            handleViewPhotosClick={handleViewPhotosClick}
+            onManageDisableScrolling={onManageDisableScrolling}
+            actionBar={actionBar}
+          />
+        ) : (
+          <div className={css.actionBarContainerForNoListingImage}>{actionBar}</div>
+        )}
         <div className={css.contentWrapperForHeroLayout}>
           <div className={css.mainColumnForHeroLayout}>
-            <div className={css.mobileHeading}>
+            <div className={showListingImage ? css.mobileHeading : css.noListingImageHeadingHero}>
               <H4 as="h1" className={css.orderPanelTitle}>
                 <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
               </H4>
@@ -398,6 +434,7 @@ export const ListingPageComponent = props => {
               marketplaceCurrency={config.currency}
               dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
               marketplaceName={config.marketplaceName}
+              showListingImage={showListingImage}
             />
           </div>
         </div>

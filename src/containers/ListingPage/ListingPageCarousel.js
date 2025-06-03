@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 
 // Contexts
 import { useConfiguration } from '../../context/configurationContext';
@@ -25,6 +26,7 @@ import {
   isForbiddenError,
 } from '../../util/errors.js';
 import { hasPermissionToViewData, isUserAuthorized } from '../../util/userHelpers.js';
+import { requireListingImage } from '../../util/configHelpers';
 import {
   ensureListing,
   ensureOwnListing,
@@ -205,6 +207,10 @@ export const ListingPageComponent = props => {
       <ErrorPage topbar={topbar} scrollingDisabled={scrollingDisabled} intl={intl} invalidListing />
     );
   }
+  const validListingTypes = listingConfig.listingTypes;
+  const foundListingTypeConfig = validListingTypes.find(conf => conf.listingType === listingType);
+  const showListingImage = requireListingImage(foundListingTypeConfig);
+
   const processName = resolveLatestProcessName(transactionProcessAlias.split('/')[0]);
   const isBooking = isBookingProcess(processName);
   const isPurchase = isPurchaseProcess(processName);
@@ -335,11 +341,16 @@ export const ListingPageComponent = props => {
                 }}
               />
             ) : null}
-            <SectionGallery
-              listing={currentListing}
-              variantPrefix={config.layout.listingImage.variantPrefix}
-            />
-            <div className={css.mobileHeading}>
+            {showListingImage ? (
+              <SectionGallery
+                listing={currentListing}
+                variantPrefix={config.layout.listingImage.variantPrefix}
+              />
+            ) : null}
+
+            <div
+              className={showListingImage ? css.mobileHeading : css.noListingImageHeadingProduct}
+            >
               <H4 as="h1" className={css.orderPanelTitle}>
                 <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
               </H4>
@@ -377,7 +388,9 @@ export const ListingPageComponent = props => {
           </div>
           <div className={css.orderColumnForProductLayout}>
             <OrderPanel
-              className={css.productOrderPanel}
+              className={classNames(css.productOrderPanel, {
+                [css.imagesEnabled]: showListingImage,
+              })}
               listing={currentListing}
               isOwnListing={isOwnListing}
               onSubmit={handleOrderSubmit}
@@ -406,6 +419,7 @@ export const ListingPageComponent = props => {
               marketplaceCurrency={config.currency}
               dayCountAvailableForBooking={config.stripe.dayCountAvailableForBooking}
               marketplaceName={config.marketplaceName}
+              showListingImage={showListingImage}
             />
           </div>
         </div>
