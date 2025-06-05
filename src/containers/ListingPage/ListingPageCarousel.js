@@ -48,6 +48,7 @@ import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 // Shared components
 import {
   H4,
+  H3,
   Page,
   NamedLink,
   NamedRedirect,
@@ -341,19 +342,24 @@ export const ListingPageComponent = props => {
                 }}
               />
             ) : null}
-            {showListingImage ? (
+            {showListingImage && (
               <SectionGallery
                 listing={currentListing}
                 variantPrefix={config.layout.listingImage.variantPrefix}
               />
-            ) : null}
-
+            )}
             <div
               className={showListingImage ? css.mobileHeading : css.noListingImageHeadingProduct}
             >
-              <H4 as="h1" className={css.orderPanelTitle}>
-                <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-              </H4>
+              {showListingImage ? (
+                <H4 as="h1" className={css.orderPanelTitle}>
+                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
+                </H4>
+              ) : (
+                <H3 as="h1" className={css.orderPanelTitle}>
+                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
+                </H3>
+              )}
             </div>
             <SectionTextMaybe text={description} showAsIngress />
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 
 // Contexts
 import { useConfiguration } from '../../context/configurationContext';
@@ -47,6 +48,7 @@ import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 // Shared components
 import {
   H4,
+  H3,
   Page,
   NamedLink,
   NamedRedirect,
@@ -306,7 +308,7 @@ export const ListingPageComponent = props => {
       <>
         {noPayoutDetailsSetWithOwnListing ? (
           <ActionBarMaybe
-            className={css.actionBarForHeroLayout}
+            className={classNames(css.actionBarForHeroLayout, {[css.actionBarNoBorderRadiusOnMobile]: !showListingImage})}
             isOwnListing={isOwnListing}
             listing={currentListing}
             showNoPayoutDetailsSet={noPayoutDetailsSetWithOwnListing}
@@ -314,7 +316,7 @@ export const ListingPageComponent = props => {
           />
         ) : null}
         <ActionBarMaybe
-          className={css.actionBarForHeroLayout}
+            className={classNames(css.actionBarForHeroLayout, {[css.actionBarNoBorderRadiusOnMobile]: !showListingImage})}
           isOwnListing={isOwnListing}
           listing={currentListing}
           currentUser={currentUser}
@@ -363,14 +365,21 @@ export const ListingPageComponent = props => {
             actionBar={actionBar}
           />
         ) : (
-          <div className={css.actionBarContainerForNoListingImage}>{actionBar}</div>
+          isOwnListing && <div className={css.actionBarContainerForNoListingImage}>{actionBar}</div>
         )}
         <div className={css.contentWrapperForHeroLayout}>
           <div className={css.mainColumnForHeroLayout}>
             <div className={showListingImage ? css.mobileHeading : css.noListingImageHeadingHero}>
-              <H4 as="h1" className={css.orderPanelTitle}>
-                <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-              </H4>
+              {showListingImage ? (
+                // add css logic here that applies larger margin on mobile view to push down title
+                <H4 as="h1" className={css.orderPanelTitle}>
+                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
+                </H4>
+              ) : (
+                <H3 as="h1" className={classNames(css.orderPanelTitle, {[css.titleMarginForOwnListingNoImage]: isOwnListing})}>
+                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
+                </H3>
+              )}
             </div>
             <SectionTextMaybe text={description} showAsIngress />
 

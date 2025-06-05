@@ -100,7 +100,18 @@
 }
 
 .actionBarContainerForNoListingImage {
-  padding: 13px;
+  /* Mobile positioning for action bar when no listing image is present */
+  position: absolute;
+  width: 100%;
+  border-radius: 0;
+  
+  @media (--viewportMedium) {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;  
+    padding: 12px;
+  }
 }
 
 .actionBarForHeroLayout {
@@ -108,6 +119,14 @@
    should not show a pointer */
   cursor: initial;
   border-radius: var(--borderRadiusMedium);
+
+  &.actionBarNoBorderRadiusOnMobile {
+    border-radius: 0;
+      @media (--viewportMedium) {
+          border-radius: var(--borderRadiusMedium);
+
+      }
+  }
 }
 
 .actionBarCTA {
@@ -379,6 +398,12 @@
   width: 100%;
   margin-top: 0;
   margin-bottom: 0;
+  &.titleMarginForOwnListingNoImage {
+        margin-top: 100px;
+    @media (--viewportMedium) {
+margin-top: 0;
+    }
+  }
 }
 
 .sectionAvatar {
