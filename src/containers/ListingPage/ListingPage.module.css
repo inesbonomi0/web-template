@@ -104,12 +104,12 @@
   position: absolute;
   width: 100%;
   border-radius: 0;
-  
+
   @media (--viewportMedium) {
     position: relative;
     top: auto;
     left: auto;
-    width: auto;  
+    width: auto;
     padding: 12px;
   }
 }
@@ -122,10 +122,9 @@
 
   &.actionBarNoBorderRadiusOnMobile {
     border-radius: 0;
-      @media (--viewportMedium) {
-          border-radius: var(--borderRadiusMedium);
-
-      }
+    @media (--viewportMedium) {
+      border-radius: var(--borderRadiusMedium);
+    }
   }
 }
 
@@ -399,9 +398,9 @@
   margin-top: 0;
   margin-bottom: 0;
   &.titleMarginForOwnListingNoImage {
-        margin-top: 100px;
+    margin-top: 100px;
     @media (--viewportMedium) {
-margin-top: 0;
+      margin-top: 0;
     }
   }
 }

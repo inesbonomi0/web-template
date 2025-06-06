@@ -308,7 +308,9 @@ export const ListingPageComponent = props => {
       <>
         {noPayoutDetailsSetWithOwnListing ? (
           <ActionBarMaybe
-            className={classNames(css.actionBarForHeroLayout, {[css.actionBarNoBorderRadiusOnMobile]: !showListingImage})}
+            className={classNames(css.actionBarForHeroLayout, {
+              [css.actionBarNoBorderRadiusOnMobile]: !showListingImage,
+            })}
             isOwnListing={isOwnListing}
             listing={currentListing}
             showNoPayoutDetailsSet={noPayoutDetailsSetWithOwnListing}
@@ -316,7 +318,9 @@ export const ListingPageComponent = props => {
           />
         ) : null}
         <ActionBarMaybe
-            className={classNames(css.actionBarForHeroLayout, {[css.actionBarNoBorderRadiusOnMobile]: !showListingImage})}
+          className={classNames(css.actionBarForHeroLayout, {
+            [css.actionBarNoBorderRadiusOnMobile]: !showListingImage,
+          })}
           isOwnListing={isOwnListing}
           listing={currentListing}
           currentUser={currentUser}
@@ -376,7 +380,12 @@ export const ListingPageComponent = props => {
                   <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
                 </H4>
               ) : (
-                <H3 as="h1" className={classNames(css.orderPanelTitle, {[css.titleMarginForOwnListingNoImage]: isOwnListing})}>
+                <H3
+                  as="h1"
+                  className={classNames(css.orderPanelTitle, {
+                    [css.titleMarginForOwnListingNoImage]: isOwnListing,
+                  })}
+                >
                   <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
                 </H3>
               )}
