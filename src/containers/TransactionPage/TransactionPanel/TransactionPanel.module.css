@@ -269,7 +269,7 @@
     display: block;
     margin: 24px 48px 32px 48px;
     &.noListingImage {
-      margin-top: 48px;
+      margin-top: 32px;
     }
   }
 }
