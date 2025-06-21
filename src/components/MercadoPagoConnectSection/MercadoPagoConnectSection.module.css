@@ -1,0 +1,12 @@
+.root {
+  margin: 1rem 0;
+}
+
+.connected {
+  color: green;
+  font-weight: 600;
+}
+
+.connectButton {
+  margin-top: 0.5rem;
+}

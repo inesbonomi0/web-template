@@ -240,6 +240,15 @@ export const showCreateListingLinkForUser = (config, currentUser) => {
  * @returns {Object} { showPayoutDetails: Boolean, showPaymentMethods: boolean }
  */
 export const showPaymentDetailsForUser = (config, currentUser) => {
+  // If Stripe publishableKey is not defined, hide Stripe-specific account setting pages.
+  const hasStripeKey = !!config?.stripe?.publishableKey;
+  if (!hasStripeKey) {
+    return {
+      showPayoutDetails: false,
+      showPaymentMethods: false,
+    };
+  }
+
   const currentUserTypeConfig = getCurrentUserTypeConfig(config, currentUser);
   const { paymentMethods = true, payoutDetails = true } =
     currentUserTypeConfig?.accountLinksVisibility || {};

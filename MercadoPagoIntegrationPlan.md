@@ -85,6 +85,11 @@ Decide on a secure storage strategy (e.g. `.env`, CI secrets, Vercel project var
 - [ ] Display `payment_id`, fee and payout timeline in TransactionPage.
 - [ ] Manual refund button for admins.
 
+### Phase 8 — Stripe-specific account pages
+
+- [ ] Removed Stripe-specific account pages when Stripe key is absent
+- [ ] Updated `showPaymentDetailsForUser` to hide Payout & Payment Methods tabs if no Stripe key.
+
 ---
 
 ## 3 Code Touchpoints Checklist
@@ -126,6 +131,8 @@ HTTPS, do not log tokens or PII.
 
 ## 6 Progress Log
 
-| Date       | Completed                                                                                                                     | Notes                                                   |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| 2025-06-21 | ✅ Phase 1: Added backend OAuth callback endpoint (`server/api/mp/oauth-callback.js`) and registered route in `apiRouter.js`. | Created token exchange with MP and profile persistence. |
+| Date       | Completed                                                                                                                     | Notes                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 2025-06-21 | ✅ Phase 1: Added backend OAuth callback endpoint (`server/api/mp/oauth-callback.js`) and registered route in `apiRouter.js`. | Created token exchange with MP and profile persistence.                                     |
+| 2025-06-21 | ✅ Phase 1: Added front-end Mercado Pago connect workflow (ProfileSettingsPage)                                               | New component `MercadoPagoConnectSection` with OAuth popup & postMessage refresh            |
+| 2025-06-21 | ✅ Removed Stripe-specific account pages when Stripe key is absent                                                            | Updated `showPaymentDetailsForUser` to hide Payout & Payment Methods tabs if no Stripe key. |
